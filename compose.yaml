@@ -1,0 +1,140 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-marketradar}
+      POSTGRES_USER: ${POSTGRES_USER:-marketradar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marketradar}
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-marketradar} -d ${POSTGRES_DB:-marketradar}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      APP_MODE: ${APP_MODE:-local}
+      EXTERNAL_PROVIDERS: ${EXTERNAL_PROVIDERS:-disabled}
+      MARKETPLACE_SOURCE: ${MARKETPLACE_SOURCE:-fixture}
+      MODEL_GATEWAY: ${MODEL_GATEWAY:-local}
+      GENAI_AUTH_MODE: ${GENAI_AUTH_MODE:-auto}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-local}
+      RETRIEVER: ${RETRIEVER:-pgvector}
+      VERTEX_PROJECT_ID: ${VERTEX_PROJECT_ID:-}
+      VERTEX_LOCATION: ${VERTEX_LOCATION:-global}
+      VERTEX_DATA_STORE_ID: ${VERTEX_DATA_STORE_ID:-hardware-knowledge}
+      VERTEX_MODEL_EXTRACTION: ${VERTEX_MODEL_EXTRACTION:-gemini-3.5-flash-lite}
+      VERTEX_MODEL_INVESTIGATION: ${VERTEX_MODEL_INVESTIGATION:-gemini-3.7-flash}
+      VERTEX_MODEL_PRO: ${VERTEX_MODEL_PRO:-gemini-3.1-pro}
+      VERTEX_EMBEDDING_MODEL: ${VERTEX_EMBEDDING_MODEL:-text-embedding-004}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      BROWSER_WORKER_URL: ${BROWSER_WORKER_URL:-http://browser-worker:8100}
+      OLX_SESSION_DIR: /data/olx_session
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-marketradar}:${POSTGRES_PASSWORD:-marketradar}@postgres:5432/${POSTGRES_DB:-marketradar}
+      PORT: 8000
+    ports:
+      - "${API_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${OLX_SESSION_HOST_DIR:-.cache/olx_session}:/data/olx_session
+      - ./fixtures:/app/fixtures:ro
+      - ./packages:/app/packages
+      - ./apps/api:/app/apps/api
+      - ./tests:/app/tests
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+
+  db-init:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-marketradar}:${POSTGRES_PASSWORD:-marketradar}@postgres:5432/${POSTGRES_DB:-marketradar}
+    command: ["sh", "-c", "alembic upgrade head && python -m apps.worker.cli reconcile-pipelines"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    environment:
+      APP_MODE: ${APP_MODE:-local}
+      EXTERNAL_PROVIDERS: ${EXTERNAL_PROVIDERS:-disabled}
+      MODEL_GATEWAY: ${MODEL_GATEWAY:-local}
+      GENAI_AUTH_MODE: ${GENAI_AUTH_MODE:-auto}
+      VERTEX_PROJECT_ID: ${VERTEX_PROJECT_ID:-}
+      VERTEX_LOCATION: ${VERTEX_LOCATION:-global}
+      VERTEX_MODEL_EXTRACTION: ${VERTEX_MODEL_EXTRACTION:-gemini-3.5-flash-lite}
+      VERTEX_MODEL_INVESTIGATION: ${VERTEX_MODEL_INVESTIGATION:-gemini-3.7-flash}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      MARKETPLACE_SOURCE: ${MARKETPLACE_SOURCE:-fixture}
+      BROWSER_WORKER_URL: ${BROWSER_WORKER_URL:-http://browser-worker:8100}
+      OLX_SESSION_DIR: /data/olx_session
+      PIPELINE_POLL_SECONDS: ${PIPELINE_POLL_SECONDS:-2}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-marketradar}:${POSTGRES_PASSWORD:-marketradar}@postgres:5432/${POSTGRES_DB:-marketradar}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${OLX_SESSION_HOST_DIR:-.cache/olx_session}:/data/olx_session:ro
+      - ./fixtures:/app/fixtures:ro
+      - ./packages:/app/packages
+      - ./apps/worker:/app/apps/worker
+      - ./tests:/app/tests
+
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+
+
+  web:
+    build:
+      context: apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "${WEB_HOST_PORT:-3000}:80"
+    depends_on:
+      - api
+
+  browser-worker:
+    profiles: ["container-fallback"]
+    build:
+      context: .
+      dockerfile: apps/browser_worker/Dockerfile
+    environment:
+      OLX_SESSION_DIR: /data/olx_session
+      BROWSER_WORKER_PORT: 8100
+      OLX_LOGIN_HEADLESS: ${OLX_LOGIN_HEADLESS:-false}
+      DISPLAY: ${DISPLAY:-:0}
+      XDG_RUNTIME_DIR: /mnt/wslg/runtime-dir
+    volumes:
+      - ${OLX_SESSION_HOST_DIR:-.cache/olx_session}:/data/olx_session
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg:ro
+    ports:
+      - "${BROWSER_WORKER_HOST_PORT:-8100}:8100"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8100/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  pgdata:

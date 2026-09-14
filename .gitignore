@@ -1,0 +1,94 @@
+# Environments & Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials.json
+service-account*.json
+*.token
+token.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+/build/
+develop-eggs/
+/dist/
+downloads/
+eggs/
+.eggs/
+/lib/
+/lib64/
+/parts/
+/sdist/
+/var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database & local state
+*.db
+*.sqlite
+*.sqlite3
+gridscout.db
+
+# Node / Web
+apps/web/node_modules/
+apps/web/dist/
+apps/web/.vite/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing & Coverage & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+.vitest/
+.cache/
+.playwright-cli/
+apps/web/.playwright-cli/
+*.log
+
+# Raw datasets, dumps & scrap files
+input/
+output/
+/*.csv
+/*.xlsx
+/*.xls
+!fixtures/**
+*:Zone.Identifier
+*Zone.Identifier*
+
+# Internal AI agent development & scratch exploration
+.agents/
+plan/
+AGENTS.md
+GOAL.md
+PRD.md
+BOOTSTRAP_PROMPT.md
+*DIAGNOSTIC_REPORT*.md
+*DISCOVERY_REPORT*.md
+analyze_incomplete_run.py
+analyze_postgres.py
+check_resolve.py
+csv_analysis.py
+inspect_db.py
+view_samples.py
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

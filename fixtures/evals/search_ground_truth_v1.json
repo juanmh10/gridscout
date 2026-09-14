@@ -1,0 +1,111 @@
+{
+  "dataset_version": "search-v1.1.0",
+  "cases": [
+    {
+      "id": "galaxy-book-3-ips",
+      "query": "notebook Samsung Galaxy Book 3 16GB RAM IPS até R$ 3000 SP",
+      "expected_intent": {"category": "notebook", "brands": ["Samsung"], "families": ["Galaxy Book"], "generations": ["3"]},
+      "relevant_ids": ["fixture-gb3-1", "fixture-gb3-2"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-gb3-1", "title": "Samsung Galaxy Book 3 notebook 16GB RAM IPS", "price": 2799, "location": "São Paulo, SP", "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "3", "ram_gb": 16, "panel_type": "IPS"}},
+        {"source": "fixture", "external_id": "fixture-gb3-2", "title": "Samsung Galaxy Book 3 notebook 16GB RAM IPS", "price": 2999, "location": "SP", "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "3", "ram_gb": 16, "panel_type": "IPS"}},
+        {"source": "fixture", "external_id": "fixture-gb4-1", "title": "Samsung Galaxy Book 4 notebook 16GB RAM OLED", "price": 2899, "location": "SP", "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "4", "ram_gb": 16, "panel_type": "OLED"}}
+      ]
+    },
+    {
+      "id": "galaxy-book-generations-1-4",
+      "query": "Samsung Galaxy Book 1 a 4 notebook",
+      "expected_intent": {"category": "notebook", "brands": ["Samsung"], "families": ["Galaxy Book"], "models": ["Galaxy Book 1", "Galaxy Book 2", "Galaxy Book 3", "Galaxy Book 4"], "generations": ["1", "2", "3", "4"]},
+      "relevant_ids": ["fixture-gb1", "fixture-gb2", "fixture-gb3", "fixture-gb4"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-gb1", "title": "Samsung Galaxy Book 1 notebook", "price": 1200, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "1"}},
+        {"source": "fixture", "external_id": "fixture-gb2", "title": "Samsung Galaxy Book 2 notebook", "price": 1600, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "2"}},
+        {"source": "fixture", "external_id": "fixture-gb3", "title": "Samsung Galaxy Book 3 notebook", "price": 2200, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "3"}},
+        {"source": "fixture", "external_id": "fixture-gb4", "title": "Samsung Galaxy Book 4 notebook", "price": 2900, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book", "generation": "4"}}
+      ]
+    },
+    {
+      "id": "ram-ssd-units-and-duplicate",
+      "query": "notebook 16GB RAM 1TB SSD",
+      "expected_intent": {"category": "notebook"},
+      "relevant_ids": ["fixture-storage-1", "fixture-storage-1"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-storage-1", "title": "Notebook 16GB RAM 1TB SSD", "price": 2500, "attributes": {"category": "notebook", "ram_gb": 16, "ssd_gb": 1024}},
+        {"source": "fixture", "external_id": "fixture-storage-1", "title": "Notebook 16GB RAM 1TB SSD duplicate", "price": 2490, "attributes": {"category": "notebook", "ram_gb": 16, "ssd_gb": 1024}},
+        {"source": "alt-fixture", "external_id": "fixture-storage-1", "title": "Notebook 16GB RAM 1TB SSD other source", "price": 2550, "attributes": {"category": "notebook", "ram_gb": 16, "ssd_gb": 1024}},
+        {"source": "fixture", "external_id": "fixture-storage-2", "title": "Notebook 8GB RAM 512GB SSD", "price": 1800, "attributes": {"category": "notebook", "ram_gb": 8, "ssd_gb": 512}}
+      ]
+    },
+    {
+      "id": "categorical-panels",
+      "query": "notebook OLED",
+      "expected_intent": {"category": "notebook"},
+      "relevant_ids": ["fixture-oled"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-oled", "title": "Notebook tela OLED", "price": 3000, "attributes": {"category": "notebook", "panel_type": "OLED"}},
+        {"source": "fixture", "external_id": "fixture-ips", "title": "Notebook tela IPS", "price": 2000, "attributes": {"category": "notebook", "panel_type": "IPS"}},
+        {"source": "fixture", "external_id": "fixture-tn", "title": "Notebook tela TN", "price": 1500, "attributes": {"category": "notebook", "panel_type": "TN"}}
+      ]
+    },
+    {
+      "id": "ryzen-equivalent",
+      "query": "Ryzen 5 5600 equivalente ou melhor",
+      "expected_intent": {"category": "cpu", "families": ["Ryzen 5"], "models": ["Ryzen 5 5600"]},
+      "relevant_ids": ["fixture-r5600", "fixture-r7600"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-r5600", "title": "AMD Ryzen 5 5600 processador", "price": 600, "attributes": {"category": "cpu", "brand": "AMD", "family": "Ryzen 5"}},
+        {"source": "fixture", "external_id": "fixture-r7600", "title": "AMD Ryzen 5 7600 processador", "price": 1000, "attributes": {"category": "cpu", "brand": "AMD", "family": "Ryzen 5"}},
+        {"source": "fixture", "external_id": "fixture-r5500", "title": "AMD Ryzen 5 5500 processador", "price": 450, "attributes": {"category": "cpu", "brand": "AMD", "family": "Ryzen 5"}}
+      ]
+    },
+    {
+      "id": "incomplete-and-alias-title",
+      "query": "Samsung Galaxy Book",
+      "expected_intent": {"category": "notebook", "brands": ["Samsung"], "families": ["Galaxy Book"]},
+      "relevant_ids": ["fixture-alias-gb"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-alias-gb", "title": "GalaxyBook notebook", "price": 2100, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book"}},
+        {"source": "fixture", "external_id": "fixture-incomplete", "title": "Notebook Samsung", "price": 1000, "attributes": {"category": "notebook", "brand": "Samsung"}}
+      ]
+    },
+    {
+      "id": "contradictory-condition",
+      "query": "notebook novo usado",
+      "expected_intent": {"category": "notebook"},
+      "relevant_ids": [],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-new", "title": "Notebook novo", "price": 2000, "condition": "new", "attributes": {"category": "notebook"}},
+        {"source": "fixture", "external_id": "fixture-used", "title": "Notebook usado", "price": 1000, "condition": "used", "attributes": {"category": "notebook"}}
+      ]
+    },
+    {
+      "id": "contradictory-panel-exclusion",
+      "query": "notebook IPS sem IPS",
+      "expected_intent": {"category": "notebook"},
+      "relevant_ids": [],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-ips-excluded", "title": "Notebook IPS", "price": 2000, "attributes": {"category": "notebook", "panel_type": "IPS"}}
+      ]
+    },
+    {
+      "id": "adaptive-long-tail",
+      "query": "notebook Samsung Galaxy Book",
+      "expected_intent": {"category": "notebook", "brands": ["Samsung"], "families": ["Galaxy Book"]},
+      "relevant_ids": ["fixture-tail-1", "fixture-tail-2"],
+      "candidates": [
+        {"source": "fixture", "external_id": "fixture-noise-1", "title": "Notebook genérico", "price": 1000, "attributes": {"category": "notebook"}},
+        {"source": "fixture", "external_id": "fixture-noise-2", "title": "Notebook Dell", "price": 1100, "attributes": {"category": "notebook", "brand": "Dell"}},
+        {"source": "fixture", "external_id": "fixture-noise-3", "title": "Notebook Acer", "price": 1200, "attributes": {"category": "notebook", "brand": "Acer"}},
+        {"source": "fixture", "external_id": "fixture-noise-4", "title": "Notebook Lenovo", "price": 1300, "attributes": {"category": "notebook", "brand": "Lenovo"}},
+        {"source": "fixture", "external_id": "fixture-noise-5", "title": "Notebook ASUS", "price": 1400, "attributes": {"category": "notebook", "brand": "ASUS"}},
+        {"source": "fixture", "external_id": "fixture-noise-6", "title": "Notebook Dell usado", "price": 1500, "attributes": {"category": "notebook", "brand": "Dell"}},
+        {"source": "fixture", "external_id": "fixture-noise-7", "title": "Notebook Acer usado", "price": 1600, "attributes": {"category": "notebook", "brand": "Acer"}},
+        {"source": "fixture", "external_id": "fixture-noise-8", "title": "Notebook Lenovo usado", "price": 1700, "attributes": {"category": "notebook", "brand": "Lenovo"}},
+        {"source": "fixture", "external_id": "fixture-noise-9", "title": "Notebook ASUS usado", "price": 1800, "attributes": {"category": "notebook", "brand": "ASUS"}},
+        {"source": "fixture", "external_id": "fixture-noise-10", "title": "Notebook sem marca", "price": 1900, "attributes": {"category": "notebook"}},
+        {"source": "fixture", "external_id": "fixture-tail-1", "title": "Samsung Galaxy Book 3 notebook", "price": 2200, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book"}},
+        {"source": "fixture", "external_id": "fixture-tail-2", "title": "Samsung Galaxy Book 4 notebook", "price": 2400, "attributes": {"category": "notebook", "brand": "Samsung", "family": "Galaxy Book"}}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "external_id": "101",
+    "title": "RTX 3080 EVGA FTW3 Ultra 10GB impecável",
+    "description": "Placa usada apenas para jogos, nunca minerada. Acompanha caixa original e nota fiscal.",
+    "price": 2100.0,
+    "location_state": "SP",
+    "location_city": "São Paulo",
+    "seller_name": "TechTrader_SP",
+    "seller_rating": 4.9,
+    "condition": "like_new",
+    "attributes": {"vram": "10GB", "brand": "EVGA", "box": true},
+    "source_url": "file://fixtures/marketplace/html/items/101.html",
+    "delivery_text": "Envio disponível para todo o Brasil",
+    "seller_verification": "VERIFIED",
+    "seller_evidence": ["Usuário verificado"]
+  },
+  {
+    "external_id": "102",
+    "title": "MacBook Air M1 8GB 256GB Cinza Espacial",
+    "description": "Notebook em excelente estado, bateria conservada e carregador original.",
+    "price": 3600.0,
+    "location_state": "SP",
+    "location_city": "Campinas",
+    "seller_name": "AppleUser_99",
+    "seller_rating": 4.8,
+    "condition": "good",
+    "attributes": {"ram_gb": 8, "storage_gb": 256, "chip": "M1"},
+    "source_url": "file://fixtures/marketplace/html/items/102.html",
+    "delivery_text": "Somente retirada em Campinas",
+    "seller_verification": "UNKNOWN"
+  },
+  {
+    "external_id": "103",
+    "title": "Processador AMD Ryzen 7 5800X3D na Caixa",
+    "description": "Processador funcionando, acompanha caixa original.",
+    "price": 1450.0,
+    "location_state": "SP",
+    "location_city": "São Paulo",
+    "seller_name": "HardwareSP",
+    "seller_rating": 4.9,
+    "condition": "good",
+    "attributes": {"socket": "AM4", "cores": 8},
+    "source_url": "file://fixtures/marketplace/html/items/103.html",
+    "delivery_text": "",
+    "seller_verification": "UNKNOWN"
+  }
+]

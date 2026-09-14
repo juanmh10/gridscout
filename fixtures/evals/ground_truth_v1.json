@@ -1,0 +1,18 @@
+{
+  "normalization_cases": [
+    {
+      "raw_title": "RTX 3080 EVGA FTW3",
+      "expected_product_id": "prod-gpu-rtx3080"
+    }
+  ],
+  "comparable_cases": [],
+  "market_stats_cases": [
+    {
+      "product_id": "prod-gpu-rtx3080",
+      "expected_median": 2600.0,
+      "tolerance": 0.1
+    }
+  ],
+  "retrieval_cases": [],
+  "opportunity_cases": []
+}

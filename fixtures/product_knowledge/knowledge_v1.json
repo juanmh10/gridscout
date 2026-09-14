@@ -1,0 +1,13 @@
+[
+  {
+    "id": "pk-gpu-rtx3080-01",
+    "product_id": "prod-gpu-rtx3080",
+    "category": "gpu",
+    "title": "RTX 3080 Thermal VRAM Inspection",
+    "body": "EVGA FTW3 VRAM thermal pads require check on high loads.",
+    "metadata": {
+      "generation": "Ampere",
+      "critical_check": "VRAM temperature under load"
+    }
+  }
+]
